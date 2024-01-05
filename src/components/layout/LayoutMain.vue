@@ -14,7 +14,7 @@
               <template v-for="{ path, name } in routes" v-bind:key="name">
                 <router-link
                   v-bind:to="{ path }"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md font-medium"
                   exact-active-class="bg-gray-900 text-white"
                 >
                   {{ name }}
