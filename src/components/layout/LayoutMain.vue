@@ -26,7 +26,7 @@
       </div>
     </div>
   </nav>
-  <main class="flex justify-center">
+  <main class="flex-1 flex justify-center">
     <router-view />
   </main>
 </template>

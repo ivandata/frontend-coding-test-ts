@@ -29,9 +29,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 import useSettingsStore from '@store/settings'
 import { GameLevel, SettingsStore } from '@store/types'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 const settingsStore = useSettingsStore()
 
@@ -51,11 +54,9 @@ const validateInitials = () => {
 const saveSettings = () => {
   settingsStore.setInitials(state.initials ?? '') // Set to empty string if null
   settingsStore.setGameLevel(state.gameLevel)
-  console.log(
-    'Settings saved:',
-    settingsStore.initials,
-    settingsStore.gameLevel,
-  )
+  toast.success('Settings saved', {
+    timeout: 2000,
+  })
 }
 </script>
 

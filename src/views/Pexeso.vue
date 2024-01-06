@@ -66,6 +66,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, Ref, watch, computed } from 'vue'
+import { useToast } from 'vue-toastification'
 import useScoresStore from '@store/scores'
 import useSettingsStore from '@store/settings'
 import axios from 'axios'
@@ -118,7 +119,7 @@ const state = reactive<State>({ ...initialState })
 const setDefaultState = () => {
   Object.assign(state, { ...initialState, ...{ cards: [] } })
 }
-
+const toast = useToast()
 const isResetButtonDisabled = computed(
   () => state.isLoading || !state.isGameStarted || state.preparationTime,
 )
@@ -228,6 +229,9 @@ const onCardPress = (event: KeyboardEvent | MouseEvent) => {
 
     if (isCardMatched.value) {
       state.scores += 1
+      toast.success('Got one point!', {
+        timeout: 2000,
+      })
     }
     return
   }
@@ -318,6 +322,7 @@ const calculateScore = ({
   totalActions: number
   totalCards: number
 }) => {
+  if (!scores) return 0
   // Time Score: Decreases with more time spent
   const timeScore = Math.max(0, gameTime * 10) // Multiply by a factor
 
@@ -337,7 +342,7 @@ const settingsStore = useSettingsStore()
 
 const getGameResults = () => {
   state.isGameStarted = false
-  state.gameTime = initialState.gameTime - state.gameTime
+
   clearInterval(preparationInterval)
   clearInterval(gameInterval)
   const { gameTime, scores, totalActions, totalCards } = state
@@ -348,6 +353,7 @@ const getGameResults = () => {
     totalActions,
     totalCards,
   })
+  if (!state.lastResults) return
 
   const { gameLevel, initials } = settingsStore
   scoresStore.addResults(gameLevel, {
@@ -420,7 +426,7 @@ onMounted(() => {
     }
 
     & .shirt-front {
-      @apply bg-stone-100;
+      @apply bg-gray-100;
       transform: rotateY(0);
       z-index: 2;
     }
@@ -445,7 +451,7 @@ onMounted(() => {
   }
 
   &:hover .shirt-back {
-    @apply bg-stone-400;
+    @apply bg-gray-400;
   }
 
   &:focus .shirt-front,
@@ -462,7 +468,7 @@ onMounted(() => {
   left: 0;
   bottom: 0;
   border: 1px solid transparent;
-  @apply bg-stone-100;
+  @apply bg-gray-100;
   transition:
     background-color 0.15s cubic-bezier(0.2, 0, 0.38, 0.9),
     transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -470,7 +476,7 @@ onMounted(() => {
 }
 
 .shirt-back {
-  @apply bg-stone-300;
+  @apply bg-gray-300;
 }
 .shirt-front {
   transform: rotateY(180deg);
