@@ -10,7 +10,17 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "lib": ["esnext", "dom"]
+    "types": [
+      "node"
+    ],
+    "lib": ["esnext", "dom"],
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@src/*": ["./src/*"],
+      "@views/*": ["./src/views/*"],
+      "@store/*": ["./src/store/*"],
+      "@router/*": ["./src/router/*"],
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules", "public"],

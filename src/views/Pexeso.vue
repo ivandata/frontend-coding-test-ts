@@ -22,13 +22,21 @@
           Start game
         </button>
       </div>
-      <div v-if="state.isGameStarted" class="text-2xl">
-        <div v-if="state.preparationTime">
-          Get Ready: {{ state.preparationTime }}
+      <div>
+        <div v-if="state.isGameStarted" class="text-2xl">
+          <div v-if="state.preparationTime">
+            Get Ready: {{ state.preparationTime }}
+          </div>
+          <div v-else-if="state.gameTime">
+            <div class="text-xs">Remaining time</div>
+            {{ formattedGameTime }}
+          </div>
         </div>
-        <div v-else-if="state.gameTime">
-          <div class="text-xs">Remaining time</div>
-          {{ formattedGameTime }}
+        <div v-else-if="state.lastResults" class="text-2xl">
+          <div class="text-xs">Your results</div>
+          <div>
+            {{ state.lastResults }}
+          </div>
         </div>
       </div>
     </div>
@@ -58,6 +66,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, Ref, watch, computed } from 'vue'
+import useScoresStore from '@store/scores'
+import useSettingsStore from '@store/settings'
 import axios from 'axios'
 
 interface CardProps {
@@ -81,6 +91,8 @@ interface State {
   preparationTime: number
   scores: number
   totalCards: number
+  totalActions: number
+  lastResults: number
 }
 
 let preparationInterval: ReturnType<typeof setInterval>
@@ -93,10 +105,12 @@ const initialState: State = {
   current: ref(null),
   isGameStarted: false,
   preparationTime: 5,
-  gameTime: 65, // 3 minutes in seconds
+  gameTime: 30, // 3 minutes in seconds
   isGameFinished: false,
   scores: 0,
-  totalCards: 32,
+  totalCards: 16,
+  totalActions: 0,
+  lastResults: 0,
 }
 
 const state = reactive<State>({ ...initialState })
@@ -191,12 +205,17 @@ const onCardMove = (event: KeyboardEvent) => {
   }
 }
 
+const isCardMatched = computed(
+  () => state.previous?.dataset.id === state.current?.dataset.id,
+)
+
 const onCardPress = (event: KeyboardEvent | MouseEvent) => {
-  if (state.isLoading) return
+  if (isResetButtonDisabled.value) return
 
   const target = event.target as HTMLElement
 
   if (target.classList.contains('opened')) return
+  state.totalActions += 1
   target.classList.add('opened')
 
   if (!state.previous) {
@@ -206,12 +225,14 @@ const onCardPress = (event: KeyboardEvent | MouseEvent) => {
 
   if (!state.current) {
     state.current = target
+
+    if (isCardMatched.value) {
+      state.scores += 1
+    }
     return
   }
 
-  if (state.previous?.dataset.id === state.current?.dataset.id) {
-    state.scores += 1
-  } else {
+  if (!isCardMatched.value) {
     state.current?.classList.remove('opened')
     state.previous?.classList.remove('opened')
   }
@@ -286,29 +307,68 @@ const startGame = () => {
   startPreparationTimer()
 }
 
-watch(
-  () => state.isGameFinished,
-  (newValue) => {
-    if (newValue) {
-      // send feedback to the user
-      // set scores to table with username
-    }
-  },
-)
+const calculateScore = ({
+  gameTime,
+  scores,
+  totalActions,
+  totalCards,
+}: {
+  gameTime: number
+  scores: number
+  totalActions: number
+  totalCards: number
+}) => {
+  // Time Score: Decreases with more time spent
+  const timeScore = Math.max(0, gameTime * 10) // Multiply by a factor
 
-watch(
-  () => state.scores,
-  (newValue) => {
-    if (newValue === state.totalCards) {
-      // send feedback to the user
-      // set scores to table  with username
-    }
-  },
-)
+  // Accuracy Score: Scores are the number of found duplicates
+  const accuracyScore = scores * 50 // Multiply by a factor
 
-onMounted(async () => {
+  // Action Score: Fewer actions result in a higher score
+  // (assuming a perfect game has actions equal to twice the number of cards)
+  const perfectActions = 2 * totalCards
+  const actionScore = Math.max(0, 500 - (totalActions - perfectActions) * 10)
+
+  return timeScore + accuracyScore + actionScore
+}
+
+const scoresStore = useScoresStore()
+const settingsStore = useSettingsStore()
+
+const getGameResults = () => {
+  state.isGameStarted = false
+  state.gameTime = initialState.gameTime - state.gameTime
+  clearInterval(preparationInterval)
+  clearInterval(gameInterval)
+  const { gameTime, scores, totalActions, totalCards } = state
+
+  state.lastResults = calculateScore({
+    gameTime,
+    scores,
+    totalActions,
+    totalCards,
+  })
+
+  const { gameLevel, initials } = settingsStore
+  scoresStore.addResults(gameLevel, {
+    initials,
+    scores: state.lastResults,
+  })
+}
+
+const isGameOver = computed(() => {
+  return state.scores === state.totalCards || state.isGameFinished
+})
+
+watch(isGameOver, (newValue, oldValue) => {
+  if (newValue && !oldValue) {
+    getGameResults()
+  }
+})
+
+onMounted(() => {
   setDefaultState()
-  await createCardList()
+  createCardList()
 })
 </script>
 
