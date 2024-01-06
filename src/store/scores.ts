@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ScoresStore, Score, GameLevel } from './types'
 
 const useScoresStore = defineStore('scores', {
+  persist: true,
   state: (): ScoresStore => ({ easy: [], medium: [], hard: [] }),
   getters: {
     getScores: (state) => {
