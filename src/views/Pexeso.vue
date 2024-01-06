@@ -1,17 +1,37 @@
 <template>
   <section class="game">
-    <header class="mb-10">
+    <header class="mb-5">
       <h1 class="font-bold text-2xl leading-6">Pexeso</h1>
-      <br />
-      <button
-        class="reset-button"
-        v-bind:disabled="state.isLoading"
-        type="button"
-        v-on:click="resetGame"
-      >
-        Reset game
-      </button>
     </header>
+    <div class="flex flex-row justify-between w-full mb-5 h-10">
+      <div class="flex flex-row gap-5 items-center">
+        <button
+          class="reset-button"
+          v-bind:disabled="isResetButtonDisabled"
+          type="button"
+          v-on:click="resetGame"
+        >
+          Reset game
+        </button>
+        <button
+          class="reset-button"
+          v-bind:disabled="isStartButtonDisabled"
+          type="button"
+          v-on:click="startGame"
+        >
+          Start game
+        </button>
+      </div>
+      <div v-if="state.isGameStarted" class="text-2xl">
+        <div v-if="state.preparationTime">
+          Get Ready: {{ state.preparationTime }}
+        </div>
+        <div v-else-if="state.gameTime">
+          <div class="text-xs">Remaining time</div>
+          {{ formattedGameTime }}
+        </div>
+      </div>
+    </div>
     <div class="board">
       <ul class="cards">
         <li
@@ -37,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive, Ref } from 'vue'
+import { ref, onMounted, reactive, Ref, watch, computed } from 'vue'
 import axios from 'axios'
 
 interface CardProps {
@@ -55,13 +75,55 @@ interface State {
   isLoading: boolean
   previous: Ref<HTMLElement | null>
   current: Ref<HTMLElement | null>
+  isGameStarted: boolean
+  isGameFinished: boolean
+  gameTime: number
+  preparationTime: number
+  scores: number
+  totalCards: number
 }
 
-const state = reactive<State>({
+let preparationInterval: ReturnType<typeof setInterval>
+let gameInterval: ReturnType<typeof setInterval>
+
+const initialState: State = {
   cards: [],
   isLoading: false,
   previous: ref(null),
   current: ref(null),
+  isGameStarted: false,
+  preparationTime: 5,
+  gameTime: 65, // 3 minutes in seconds
+  isGameFinished: false,
+  scores: 0,
+  totalCards: 32,
+}
+
+const state = reactive<State>({ ...initialState })
+
+const setDefaultState = () => {
+  Object.assign(state, { ...initialState, ...{ cards: [] } })
+}
+
+const isResetButtonDisabled = computed(
+  () => state.isLoading || !state.isGameStarted || state.preparationTime,
+)
+
+const isStartButtonDisabled = computed(
+  () => state.isLoading || state.isGameStarted,
+)
+
+const formattedGameTime = computed(() => {
+  const minutes = Math.floor(state.gameTime / 60)
+  const seconds = state.gameTime % 60
+
+  // Format the minutes and seconds to always have two digits
+  const formattedMinutes = minutes.toString().padStart(2, '0')
+  const formattedSeconds = seconds.toString().padStart(2, '0')
+
+  return state.gameTime >= 60
+    ? `${formattedMinutes}:${formattedSeconds}`
+    : `${formattedSeconds} sec`
 })
 
 const shuffleElements = (cardsCollection: CardProps[]) => {
@@ -75,7 +137,9 @@ const shuffleElements = (cardsCollection: CardProps[]) => {
 }
 
 const fetchPokemons = async () => {
-  const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=32')
+  const response = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon?limit=${state.totalCards}`,
+  )
   const results = response.data.results.map((pokemon: Pokemon) => {
     const parts = pokemon.url.split('/').filter(Boolean)
     const id = parts[parts.length - 1] || 0
@@ -146,7 +210,7 @@ const onCardPress = (event: KeyboardEvent | MouseEvent) => {
   }
 
   if (state.previous?.dataset.id === state.current?.dataset.id) {
-    // add user feedback
+    state.scores += 1
   } else {
     state.current?.classList.remove('opened')
     state.previous?.classList.remove('opened')
@@ -188,11 +252,62 @@ const createCardList = () => {
 }
 
 const resetGame = () => {
-  state.cards = []
+  setDefaultState()
+  clearInterval(preparationInterval)
+  clearInterval(gameInterval)
   createCardList()
 }
 
+const startGameTimer = () => {
+  gameInterval = setInterval(() => {
+    state.gameTime -= 1
+    if (state.gameTime <= 0) {
+      clearInterval(gameInterval)
+      state.isGameFinished = true
+      state.isGameStarted = false
+    }
+  }, 1000)
+}
+
+const startPreparationTimer = () => {
+  state.isGameStarted = true
+  preparationInterval = setInterval(() => {
+    state.preparationTime -= 1
+    if (state.preparationTime <= 0) {
+      clearInterval(preparationInterval)
+      startGameTimer()
+    }
+  }, 1000)
+}
+
+const startGame = () => {
+  setDefaultState()
+  createCardList()
+  startPreparationTimer()
+}
+
+watch(
+  () => state.isGameFinished,
+  (newValue) => {
+    if (newValue) {
+      // send feedback to the user
+      // set scores to table with username
+    }
+  },
+)
+
+watch(
+  () => state.scores,
+  (newValue) => {
+    if (newValue === state.totalCards) {
+      // send feedback to the user
+      // set scores to table  with username
+    }
+  },
+)
+
 onMounted(async () => {
+  setDefaultState()
   await createCardList()
 })
 </script>
@@ -223,6 +338,8 @@ onMounted(async () => {
 }
 
 .card {
+  border-radius: 3px;
+  overflow: hidden;
   cursor: pointer;
   position: relative;
   padding-top: 100%;
