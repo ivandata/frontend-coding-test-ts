@@ -3,7 +3,11 @@ import { ScoresStore, Score, GameLevel } from './types'
 
 const useScoresStore = defineStore('scores', {
   persist: true,
-  state: (): ScoresStore => ({ easy: [], medium: [], hard: [] }),
+  state: (): ScoresStore => ({
+    [GameLevel.EASY]: [],
+    [GameLevel.MEDIUM]: [],
+    [GameLevel.HARD]: [],
+  }),
   getters: {
     getScores: (state) => {
       return (gameLevel: GameLevel) => {
@@ -12,6 +16,19 @@ const useScoresStore = defineStore('scores', {
     },
     getAllScores: (state) => {
       return state
+    },
+    getBestScoresByInitials: (state) => {
+      return (initials: string | null, level: GameLevel) => {
+        const scoresAtLevel = state[level].filter(
+          (score) => score.initials === initials,
+        )
+        if (scoresAtLevel.length > 0) {
+          return scoresAtLevel.reduce((max, score) =>
+            score.scores > max.scores ? score : max,
+          )
+        }
+        return null
+      }
     },
   },
   actions: {
