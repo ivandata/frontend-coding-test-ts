@@ -36,7 +36,7 @@
             v-bind:class="{ 'bg-white': index % 2 === 0 }"
           >
             <td class="text-left py-2">
-              <p class="text-3xl">{{ score.initials }}</p>
+              <p class="text-3xl uppercase">{{ score.initials }}</p>
             </td>
             <td class="text-right py-2">
               <p class="text-3xl">{{ score.scores }}</p>

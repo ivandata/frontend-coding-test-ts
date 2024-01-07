@@ -1,9 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest'
 import render from '@test/render'
-import useSettingsStore from '@store/settings'
 import { GameLevel } from '@store/types'
-import { nextTick } from 'vue'
 import { faker } from '@faker-js/faker'
 import GameHeader from '../GameHeader.vue'
 
@@ -12,14 +10,11 @@ describe('GameHeader', () => {
   const gameLevel = faker.helpers.arrayElement(Object.values(GameLevel))
 
   it('renders initials and game level correctly', async () => {
-    const { getByText } = render(GameHeader)
-
-    // Mock settings
-    const settingsStore = useSettingsStore()
-    settingsStore.initials = initials
-    settingsStore.gameLevel = gameLevel
-
-    await nextTick()
+    const { getByText } = render(GameHeader, {
+      store: {
+        settings: { initials, gameLevel },
+      },
+    })
 
     expect(getByText('Initials')).toBeTruthy()
     expect(getByText(initials)).toBeTruthy()

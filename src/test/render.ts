@@ -6,17 +6,18 @@ import { Component } from 'vue'
 interface RenderOptions {
   props?: Record<string, any>
   store?: Record<string, any>
+  stubActions?: boolean
 }
 
 export default function render(
   component: Component,
   options: RenderOptions = {},
 ): RenderResult {
-  const { props = {}, store = {} } = options
+  const { props = {}, store = {}, stubActions = false } = options
 
   const testingPinia = createTestingPinia({
     createSpy: vi.fn,
-    stubActions: false,
+    stubActions,
     initialState: store,
   })
 

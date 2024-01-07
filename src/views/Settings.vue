@@ -1,38 +1,20 @@
 <template>
-  <div class="settings">
-    <div>
-      <label for="initials">Your Initials:</label>
-      <input
-        id="initials"
-        v-model="state.initials"
-        type="text"
-        maxlength="3"
-        v-on:input="validateInitials"
-      />
-    </div>
-
-    <div>
-      <label for="game-level">Select Game Level:</label>
-      <select id="game-level" v-model="state.gameLevel">
-        <option
-          v-for="(level, key) in Object.values(GameLevel)"
-          v-bind:key="key"
-          v-bind:value="level"
-        >
-          {{ level }}
-        </option>
-      </select>
-    </div>
-
-    <button v-on:click="saveSettings">Save Settings</button>
-  </div>
+  <section class="w-full max-w-sm h-full">
+    <header class="my-5">
+      <h1 class="font-bold text-3xl">Settings</h1>
+    </header>
+    <InitialInput class="mb-16" />
+    <LevelSwitcher />
+  </section>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
 import useSettingsStore from '@store/settings'
-import { GameLevel, SettingsStore } from '@store/types'
+import { SettingsStore } from '@store/types'
 import { useToast } from 'vue-toastification'
+import LevelSwitcher from '@components/LevelSwitcher/LevelSwitcher.vue'
+import InitialInput from '@components/InitialInput/InitialInput.vue'
 
 const toast = useToast()
 
@@ -60,9 +42,4 @@ const saveSettings = () => {
 }
 </script>
 
-<style scoped>
-/* Add your CSS styles here */
-.settings div {
-  margin-bottom: 15px;
-}
-</style>
+<style scoped></style>

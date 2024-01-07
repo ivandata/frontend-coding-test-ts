@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import render from '@test/render'
 import useSettingsStore from '@store/settings'
 import { GameLevel } from '@store/types'
+import { faker } from '@faker-js/faker'
 import GameStatus from '../GameStatus.vue'
 
 describe('GameStatus', () => {
@@ -32,6 +33,17 @@ describe('GameStatus', () => {
   })
 
   it('displays best scores when game is not started', async () => {
+    const getRandomScores = () => ({
+      min: {
+        initials: 'ABS',
+        scores: faker.number.int({ min: 0, max: 100 }),
+      },
+      max: {
+        initials: 'ABS',
+        scores: faker.number.int({ min: 101, max: 200 }),
+      },
+    })
+    const expectedScores = getRandomScores()
     const { findByText } = render(GameStatus, {
       props: {
         isGameStarted: false,
@@ -39,22 +51,16 @@ describe('GameStatus', () => {
         gameTime: 0,
       },
       store: {
-        [GameLevel.EASY]: [
-          {
-            initials: 'ABS',
-            scores: 100,
-          },
-        ],
-        [GameLevel.MEDIUM]: [],
-        [GameLevel.HARD]: [],
+        scores: {
+          [GameLevel.EASY]: [expectedScores],
+          [GameLevel.MEDIUM]: [getRandomScores()],
+          [GameLevel.HARD]: [getRandomScores()],
+        },
+        settings: { initials: 'ABC', gameLevel: GameLevel.EASY },
       },
     })
 
-    const settingsStore = useSettingsStore()
-    settingsStore.initials = 'ABC'
-    settingsStore.gameLevel = GameLevel.EASY
-
     expect(findByText('Your best results')).toBeTruthy()
-    expect(findByText('100')).toBeTruthy()
+    expect(findByText(expectedScores.max.scores)).toBeTruthy()
   })
 })
