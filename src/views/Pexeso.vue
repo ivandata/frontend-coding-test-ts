@@ -40,7 +40,7 @@ import {
   shuffleElements,
   calculateScore,
   useFetch,
-  preparePokemons,
+  formatResults,
   GameDifficulty,
 } from '@components/game'
 import useScoresStore from '@store/scores'
@@ -71,7 +71,7 @@ const initialState: GameState = {
   isLoading: false,
   isGameStarted: false,
   preparationTime: 5,
-  gameTime: 30, // 3 minutes in seconds
+  gameTime: 60,
   isGameFinished: false,
   scores: 0,
   totalCards: 16,
@@ -92,11 +92,7 @@ const isBoardBlocked = computed(
 
 // move to config
 
-const url = ref(
-  `https://pokeapi.co/api/v2/pokemon?limit=${
-    GameDifficulty[settingsStore.gameLevel]
-  }`,
-)
+const url = ref(`https://pokeapi.co/api/v2/pokemon?limit=100`)
 
 const createTimeoutFunction =
   (pokemon: CardProps, currentDelay: number) => () =>
@@ -110,8 +106,12 @@ const createCardList = () => {
 
   fetchData()
     .then(({ data }) => {
-      const results = preparePokemons(data)
-      return shuffleElements(results)
+      const results = formatResults(data)
+      const cards = shuffleElements(results)
+        .slice(0, GameDifficulty[settingsStore.gameLevel].cards)
+        .flatMap((obj: CardProps) => [{ ...obj }, { ...obj }])
+
+      return shuffleElements(cards)
     })
     .then((pokemons) => {
       let delay = 50

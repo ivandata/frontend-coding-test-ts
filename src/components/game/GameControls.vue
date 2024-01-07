@@ -4,6 +4,7 @@
       v-if="!isGameStarted"
       class="button"
       type="button"
+      aria-label="Start Game"
       v-bind:disabled="isStartButtonDisabled"
       v-on:click="emitStart"
     >
@@ -28,6 +29,7 @@
       v-else
       class="button"
       type="button"
+      aria-label="Reset Game"
       v-bind:disabled="isResetButtonDisabled"
       v-on:click="emitReset"
     >

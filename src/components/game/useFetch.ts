@@ -1,14 +1,13 @@
 import axios from 'axios'
 import { ref } from 'vue'
-import { CardProps } from './types'
 
 interface Pokemon {
   name: string
   url: string
 }
 
-export const preparePokemons = (data: { results: Pokemon[] }) => {
-  const results = data.results.map((pokemon: Pokemon) => {
+export const formatResults = (data: { results: Pokemon[] }) => {
+  return data.results.map((pokemon: Pokemon) => {
     const parts = pokemon.url.split('/').filter(Boolean)
     const id = parts[parts.length - 1] || 0
     return {
@@ -16,7 +15,6 @@ export const preparePokemons = (data: { results: Pokemon[] }) => {
       image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
     }
   })
-  return results.flatMap((obj: CardProps) => [{ ...obj }, { ...obj }])
 }
 
 export const useFetch = (url: string) => {
@@ -24,6 +22,7 @@ export const useFetch = (url: string) => {
 
   const fetchData = () => {
     isLoading.value = true
+
     return axios.get(url).finally(() => {
       isLoading.value = false
     })
