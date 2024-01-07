@@ -1,8 +1,8 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest'
 import render from '@test/render'
-import useSettingsStore from '@store/settings' // Adjust the import path as needed
-import { GameLevel } from '@store/types' // Adjust the import path as needed
+import useSettingsStore from '@store/settings'
+import { GameLevel } from '@store/types'
 import { nextTick } from 'vue'
 import { fireEvent } from '@testing-library/vue'
 import GameLevelSwitcher from '../LevelSwitcher.vue'
