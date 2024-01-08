@@ -135,7 +135,7 @@ const onCardPress = (event: KeyboardEvent | MouseEvent) => {
     }
 
     & .shirt-front {
-      @apply bg-gray-100;
+      @apply bg-white;
       transform: rotateY(0);
       z-index: 2;
     }
@@ -160,7 +160,7 @@ const onCardPress = (event: KeyboardEvent | MouseEvent) => {
   }
 
   &:hover .shirt-back {
-    @apply bg-gray-400;
+    @apply bg-gray-300;
   }
 
   &:focus .shirt-front,
@@ -185,7 +185,7 @@ const onCardPress = (event: KeyboardEvent | MouseEvent) => {
 }
 
 .shirt-back {
-  @apply bg-gray-300;
+  @apply bg-gray-200;
 }
 .shirt-front {
   transform: rotateY(180deg);

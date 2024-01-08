@@ -33,12 +33,12 @@
           <tr
             v-for="(score, index) in currentScores"
             v-bind:key="index"
-            v-bind:class="{ 'bg-white': index % 2 === 0 }"
+            v-bind:class="{ 'bg-gray-200': index % 2 === 0 }"
           >
-            <td class="text-left py-2">
+            <td class="text-left py-2 px-1">
               <p class="text-3xl uppercase">{{ score.initials }}</p>
             </td>
-            <td class="text-right py-2">
+            <td class="text-right py-2 px-1">
               <p class="text-3xl">{{ score.scores }}</p>
             </td>
           </tr>

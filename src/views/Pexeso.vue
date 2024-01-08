@@ -4,7 +4,7 @@
   >
     <GameHeader class="header" />
     <div
-      class="controls h-full flex flex-row justify-between w-full bg-white py-3 px-2 rounded-md border-2 border-gray-300 border-solid"
+      class="controls h-full flex flex-row justify-between w-full bg-white py-3 px-2 rounded-md border-2 border-gray-200 border-solid"
     >
       <GameControls
         v-bind:is-game-started="state.isGameStarted"

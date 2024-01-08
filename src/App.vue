@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-w-full min-h-screen font-sans text-sm antialiased bg-gray-200 text-center"
+    class="min-w-full min-h-screen font-sans text-sm antialiased bg-gray-50 text-center"
   >
     <router-view />
   </div>

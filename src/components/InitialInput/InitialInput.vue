@@ -1,11 +1,18 @@
 <template>
-  <div class="">
-    <label class="text-gray-400 text-xl" for="initials">Your Initials</label>
+  <section>
+    <h2 class="text-gray-500 text-xl">
+      <label for="initials">Your Initials</label>
+    </h2>
     <div class="w-full relative py-3 flex gap-2">
       <input
         ref="inputRef"
         v-model="inputValue"
-        class="text-4xl font-bold uppercase text-center w-full cursor-pointer"
+        v-bind:class="[
+          'text-4xl font-bold uppercase bg-transparent text-center w-full cursor-pointer border-transparent rounded-md focus:bg-white',
+          {
+            'border-2 border-blue-600': showSaveButton,
+          },
+        ]"
         placeholder="Enter initials"
         maxlength="5"
         pattern="[A-Za-z0-9]{1,5}"
@@ -14,7 +21,7 @@
       />
 
       <div class="button" v-on:click="makeInputFocused">
-        <span class="w-full h-full block text-gray-950">
+        <span class="w-full h-full block text-gray-800">
           <svg class="w-full h-full">
             <use xlink:href="#pencil">
               <symbol id="pencil" viewBox="0 0 512 512">
@@ -61,7 +68,7 @@
         </span>
       </button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -114,7 +121,7 @@ watch(inputValue, (newValue) => {
 
 <style scoped>
 .button {
-  @apply p-2 border-2 rounded-full bg-white border-solid text-blue-800 h-10 w-10 flex justify-center items-center absolute right-0 top-1/2 -mt-5;
+  @apply p-2 border-2 rounded-full bg-white border-solid text-blue-800 h-10 w-10 flex justify-center items-center absolute right-1 top-1/2 -mt-5;
 
   &:disabled {
     @apply pointer-events-none opacity-20 cursor-default;

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <header><h2 class="text-gray-400 text-xl">Game Difficulty</h2></header>
+    <header><h2 class="text-gray-500 text-xl">Game Difficulty</h2></header>
     <div class="w-full flex justify-between items-center py-3">
       <button
         class="button"
