@@ -1,10 +1,11 @@
 <template>
-  <section>
-    <h2 class="text-gray-500 text-xl">
+  <section class="text-center">
+    <h2 class="text-gray-400 text-xl">
       <label for="initials">Your Initials</label>
     </h2>
     <div class="w-full relative py-3 flex gap-2">
       <input
+        id="initials"
         ref="inputRef"
         v-model="inputValue"
         v-bind:class="[
@@ -20,7 +21,12 @@
         v-on:focus="toggleSaveButton(true)"
       />
 
-      <div class="button" v-on:click="makeInputFocused">
+      <button
+        class="button"
+        type="button"
+        aria-label="Change initials"
+        v-on:click="makeInputFocused"
+      >
         <span class="w-full h-full block text-gray-800">
           <svg class="w-full h-full">
             <use xlink:href="#pencil">
@@ -37,7 +43,7 @@
             </use>
           </svg>
         </span>
-      </div>
+      </button>
 
       <button
         v-if="showSaveButton"

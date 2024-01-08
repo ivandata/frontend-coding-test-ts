@@ -33,7 +33,7 @@
           <tr
             v-for="(score, index) in currentScores"
             v-bind:key="index"
-            v-bind:class="{ 'bg-gray-200': index % 2 === 0 }"
+            v-bind:class="{ 'bg-gray-100': index % 2 === 0 }"
           >
             <td class="text-left py-2 px-1">
               <p class="text-3xl uppercase">{{ score.initials }}</p>
@@ -46,7 +46,7 @@
       </table>
       <section
         v-else
-        class="flex flex-col text-center bg-white rounded-lg border-gray-200 border-solid border-2 p-12"
+        class="flex flex-col text-center bg-white rounded-lg border-gray-100 border-solid border-2 p-12"
       >
         <header class="text-3xl mb-5">
           <h1>No scores available</h1>
@@ -55,10 +55,10 @@
           <router-link
             to="/pexeso"
             class="font-medium font-bold inline-block text-blue-900"
-            exact-active-class="bg-gray-900 text-white"
           >
-            Play a game </router-link
-          >&nbsp; to add first scores.
+            Play a game
+          </router-link>
+          &nbsp;to add first scores.
         </div>
       </section>
     </div>

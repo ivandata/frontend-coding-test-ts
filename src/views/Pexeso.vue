@@ -4,7 +4,7 @@
   >
     <GameHeader class="header" />
     <div
-      class="controls h-full flex flex-row justify-between w-full bg-white py-3 px-2 rounded-md border-2 border-gray-200 border-solid"
+      class="controls h-full flex flex-row justify-between w-full bg-white py-3 px-2 rounded-md border-2 border-gray-100 border-solid"
     >
       <GameControls
         v-bind:is-game-started="state.isGameStarted"
@@ -43,8 +43,10 @@ import {
   formatResults,
   GameDifficulty,
 } from '@components/game'
+import Modal from '@components/Modal/Modal.vue'
 import useScoresStore from '@store/scores'
 import useSettingsStore from '@store/settings'
+import { ModalsContainer, VueFinalModal, useModal } from 'vue-final-modal'
 
 // Define the state and types as necessary
 interface GameState {
@@ -65,6 +67,8 @@ let gameInterval: ReturnType<typeof setInterval>
 
 const scoresStore = useScoresStore()
 const settingsStore = useSettingsStore()
+
+const { gameLevel, initials } = settingsStore
 
 const initialState: GameState = {
   cards: [],
@@ -108,7 +112,7 @@ const createCardList = () => {
     .then(({ data }) => {
       const results = formatResults(data)
       const cards = shuffleElements(results)
-        .slice(0, GameDifficulty[settingsStore.gameLevel].cards)
+        .slice(0, GameDifficulty[gameLevel].cards)
         .flatMap((obj: CardProps) => [{ ...obj }, { ...obj }])
 
       return shuffleElements(cards)
@@ -181,7 +185,6 @@ const getGameResults = () => {
   })
   if (!state.lastResults) return
 
-  const { gameLevel, initials } = settingsStore
   scoresStore.addResults(gameLevel, {
     initials,
     scores: state.lastResults,
@@ -202,7 +205,20 @@ const updateGame = (updateType: 'scores' | 'totalActions') => {
   state[updateType] += 1
 }
 
+const { open, close } = useModal({
+  component: Modal,
+})
+
+watch(settingsStore, (newValue) => {
+  if (newValue.initials) {
+    close()
+  }
+})
+
 onMounted(() => {
+  if (!settingsStore.initials) {
+    open()
+  }
   setDefaultState()
   createCardList()
 })
