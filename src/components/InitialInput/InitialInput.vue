@@ -21,58 +21,24 @@
         v-on:focus="toggleSaveButton(true)"
       />
 
-      <button
+      <BaseButton
         class="button"
-        type="button"
+        size="10"
         aria-label="Change initials"
         v-on:click="makeInputFocused"
       >
-        <span class="w-full h-full block text-gray-800">
-          <svg class="w-full h-full">
-            <use xlink:href="#pencil">
-              <symbol id="pencil" viewBox="0 0 512 512">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  fill="currentColor"
-                  stroke="currentColor"
-                  stroke-width="44"
-                  d="M358.62 129.28L86.49 402.08 70 442l39.92-16.49 272.8-272.13-24.1-24.1zM413.07 74.84l-11.79 11.78 24.1 24.1 11.79-11.79a16.51 16.51 0 000-23.34l-.75-.75a16.51 16.51 0 00-23.35 0z"
-                ></path>
-              </symbol>
-            </use>
-          </svg>
-        </span>
-      </button>
+        <SvgIcon size="full"><Pencil /></SvgIcon>
+      </BaseButton>
 
-      <button
+      <BaseButton
         v-if="showSaveButton"
         class="button"
-        type="button"
+        size="10"
         aria-label="Save initials"
         v-on:click="saveInitials"
       >
-        <span class="w-full h-full block">
-          <svg class="w-full h-full">
-            <use xlink:href="#save">
-              <symbol id="save" class="ionicon" viewBox="0 0 512 512">
-                <path
-                  d="M465.94 119.76l-73.7-73.7A47.68 47.68 0 00358.3 32H96a64 64 0 00-64 64v320a64 64 0 0064 64h320a64 64 0 0064-64V153.7a47.68 47.68 0 00-14.06-33.94zM120 112h176a8 8 0 018 8v48a8 8 0 01-8 8H120a8 8 0 01-8-8v-48a8 8 0 018-8zm139.75 319.91a80 80 0 1176.16-76.16 80.06 80.06 0 01-76.16 76.16z"
-                  fill="currentColor"
-                  stroke="currentColor"
-                ></path>
-                <circle
-                  cx="256"
-                  cy="352"
-                  r="48"
-                  fill="currentColor"
-                  stroke="currentColor"
-                ></circle>
-              </symbol>
-            </use>
-          </svg>
-        </span>
-      </button>
+        <SvgIcon size="full"><Save /></SvgIcon>
+      </BaseButton>
     </div>
   </section>
 </template>
@@ -80,7 +46,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import useSettingsStore from '@store/settings'
-import { useToast } from 'vue-toastification' // Adjust path as needed
+import { useToast } from 'vue-toastification'
+import SvgIcon, { Pencil, Save } from '@components/SvgIcon'
+import BaseButton from '@components/BaseButton/BaseButton.vue'
 
 const settingsStore = useSettingsStore()
 const inputValue = ref(settingsStore.initials)
@@ -127,7 +95,7 @@ watch(inputValue, (newValue) => {
 
 <style scoped>
 .button {
-  @apply p-2 border-2 rounded-full bg-white border-solid text-blue-800 h-10 w-10 flex justify-center items-center absolute right-1 top-1/2 -mt-5;
+  @apply absolute right-1 top-1/2 -mt-5;
 
   &:disabled {
     @apply pointer-events-none opacity-20 cursor-default;
