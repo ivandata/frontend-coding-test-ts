@@ -21,7 +21,9 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits(['click'])
-const sizeClasses = computed(() => `w-${props.size} h-${props.size} block`)
+const sizeClasses = computed(() =>
+  props.size ? `w-${props.size} h-${props.size} block w-10` : 'block',
+)
 const defaultClasses = computed(() => `button ${props.class}`)
 
 const onClick = () => {

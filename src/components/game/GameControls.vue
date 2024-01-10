@@ -3,6 +3,7 @@
     <BaseButton
       v-if="!isGameStarted"
       class="button"
+      size="10"
       aria-label="Start Game"
       v-bind:is-disabled="isStartButtonDisabled"
       v-on:click="emitStart"
@@ -14,6 +15,7 @@
 
     <BaseButton
       v-else
+      size="10"
       class="button"
       aria-label="Reset Game"
       v-bind:is-disabled="isResetButtonDisabled"

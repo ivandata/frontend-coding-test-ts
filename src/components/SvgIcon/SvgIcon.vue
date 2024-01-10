@@ -8,7 +8,9 @@ import { computed } from 'vue'
 
 const props = defineProps<{ size: number | string; color?: string }>()
 
-const sizeClasses = computed(() => `w-${props.size} h-${props.size} block`)
+const sizeClasses = computed(() =>
+  props.size ? `w-${props.size} h-${props.size} block` : 'block',
+)
 const colorClasses = computed(() => `text-${props.color}`)
 const svgClasses = computed(() => 'w-full h-full')
 </script>

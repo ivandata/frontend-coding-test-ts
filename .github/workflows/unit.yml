@@ -1,19 +1,20 @@
 name: Unit tests
 
 on:
+  push:
+    branches: [ main, master ]
   pull_request:
+    branches: [ main, master ]
 
 jobs:
   build-and-test:
     name: Run Tests
+    timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 'v21.5.0'
 
@@ -21,4 +22,4 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm run test
+        run: npm run test:unit
