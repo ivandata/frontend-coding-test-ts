@@ -1,6 +1,6 @@
 <template>
   <button
-    v-bind:class="[defaultClasses, sizeClasses]"
+    v-bind:class="['button block', sizeClasses]"
     type="button"
     v-bind:aria-label="ariaLabel"
     v-bind:disabled="isDisabled"
@@ -16,22 +16,25 @@ import { computed } from 'vue'
 const props = defineProps<{
   ariaLabel: string
   isDisabled?: boolean
-  size?: number | string
+  size?: 'sm' | 'md'
   class?: string
 }>()
 
 const emits = defineEmits(['click'])
-const sizeClasses = computed(() =>
-  props.size ? `w-${props.size} h-${props.size} block w-10` : 'block',
-)
-const defaultClasses = computed(() => `button ${props.class}`)
+
+const sizes = {
+  sm: 'small',
+  md: 'medium',
+}
+
+const sizeClasses = computed(() => (props.size ? sizes[props.size] : ''))
 
 const onClick = () => {
   emits('click')
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .button {
   @apply px-2 py-2 border-2 rounded-full bg-white text-gray-800 flex justify-center items-center;
 
@@ -43,5 +46,11 @@ const onClick = () => {
   &:hover {
     @apply text-blue-800;
   }
+}
+.small {
+  @apply w-6 h-6;
+}
+.medium {
+  @apply w-10 h-10;
 }
 </style>

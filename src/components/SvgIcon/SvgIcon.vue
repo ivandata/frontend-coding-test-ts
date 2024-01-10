@@ -1,16 +1,31 @@
 <template>
-  <span v-bind:class="[sizeClasses, colorClasses]">
-    <svg v-bind:class="svgClasses"><slot /></svg>
+  <span v-bind:class="[sizeClasses, 'block', colorClasses]">
+    <svg class="svg"><slot /></svg>
   </span>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps<{ size: number | string; color?: string }>()
+const props = defineProps<{ size?: 'sm' | 'md'; color?: string }>()
 
-const sizeClasses = computed(() =>
-  props.size ? `w-${props.size} h-${props.size} block` : 'block',
-)
-const colorClasses = computed(() => `text-${props.color}`)
-const svgClasses = computed(() => 'w-full h-full')
+const sizes = {
+  sm: 'small',
+  md: 'medium',
+}
+
+const sizeClasses = computed(() => (props.size ? sizes[props.size] : ''))
+
+const colorClasses = computed(() => (props.color ? `text-${props.color}` : ''))
 </script>
+
+<style scoped>
+.svg {
+  @apply w-full h-full;
+}
+.small {
+  @apply w-6 h-6;
+}
+.medium {
+  @apply w-10 h-10;
+}
+</style>

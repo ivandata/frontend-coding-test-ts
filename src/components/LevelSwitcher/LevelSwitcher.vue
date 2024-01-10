@@ -3,21 +3,21 @@
     <header><h2 class="text-gray-500 text-xl">Game Difficulty</h2></header>
     <div class="w-full flex justify-between items-center py-3">
       <BaseButton
-        size="16"
+        size="md"
         aria-label="Decrease game level"
         v-bind:is-disabled="isFirstLevel"
         v-on:click="changeLevel(-1)"
       >
-        <SvgIcon size="10"><ChevronBack /></SvgIcon>
+        <SvgIcon size="md"><ChevronBack /></SvgIcon>
       </BaseButton>
       <span class="text-4xl font-bold uppercase">{{ currentLevel }}</span>
       <BaseButton
-        size="16"
+        size="md"
         aria-label="Increase game level"
         v-bind:is-disabled="isLastLevel"
         v-on:click="changeLevel(1)"
       >
-        <SvgIcon size="10"><ChevronForward /></SvgIcon>
+        <SvgIcon size="md"><ChevronForward /></SvgIcon>
       </BaseButton>
     </div>
   </section>

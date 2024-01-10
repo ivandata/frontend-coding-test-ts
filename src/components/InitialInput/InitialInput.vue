@@ -23,21 +23,21 @@
 
       <BaseButton
         class="button"
-        size="10"
+        size="md"
         aria-label="Change initials"
         v-on:click="makeInputFocused"
       >
-        <SvgIcon size="full"><Pencil /></SvgIcon>
+        <SvgIcon size="sm"><Pencil /></SvgIcon>
       </BaseButton>
 
       <BaseButton
         v-if="showSaveButton"
         class="button"
-        size="10"
+        size="md"
         aria-label="Save initials"
         v-on:click="saveInitials"
       >
-        <SvgIcon size="full"><Save /></SvgIcon>
+        <SvgIcon size="sm"><Save /></SvgIcon>
       </BaseButton>
     </div>
   </section>
@@ -93,7 +93,7 @@ watch(inputValue, (newValue) => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 .button {
   @apply absolute right-1 top-1/2 -mt-5;
 

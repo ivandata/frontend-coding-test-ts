@@ -2,26 +2,25 @@
   <div class="flex flex-row gap-5 items-center">
     <BaseButton
       v-if="!isGameStarted"
-      class="button"
-      size="10"
+      size="md"
       aria-label="Start Game"
       v-bind:is-disabled="isStartButtonDisabled"
       v-on:click="emitStart"
     >
-      <SvgIcon size="6" color="white">
+      <SvgIcon size="sm" color="white">
         <Play />
       </SvgIcon>
     </BaseButton>
 
     <BaseButton
       v-else
-      size="10"
+      size="md"
       class="button"
       aria-label="Reset Game"
       v-bind:is-disabled="isResetButtonDisabled"
       v-on:click="emitReset"
     >
-      <SvgIcon size="6" color="white">
+      <SvgIcon size="sm" color="white">
         <Repeat />
       </SvgIcon>
     </BaseButton>
