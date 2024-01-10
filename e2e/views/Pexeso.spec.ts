@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Game Page Tests', () => {
   test('should load the dialog window with initial input', async ({ page }) => {
-    await page.goto('http://localhost:5173/pexeso') // Replace with your game page URL
+    await page.goto('http://localhost:5173/pexeso')
     const dialogWindow = await page
       .getByRole('dialog')
       .locator('div')
