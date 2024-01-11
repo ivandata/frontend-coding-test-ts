@@ -5,7 +5,7 @@ import Save from './svg/Save.vue'
 import Play from './svg/Play.vue'
 import Repeat from './svg/Repeat.vue'
 
-import SvgIcon from './SvgIcon.vue'
+import BaseIcon from './BaseIcon.vue'
 
-export default SvgIcon
+export default BaseIcon
 export { ChevronBack, ChevronForward, Pencil, Save, Play, Repeat }

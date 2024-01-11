@@ -20,7 +20,7 @@ const props = defineProps<{
   class?: string
 }>()
 
-const emits = defineEmits(['click'])
+const emits = defineEmits(['buttonPress'])
 
 const sizes = {
   sm: 'small',
@@ -30,7 +30,7 @@ const sizes = {
 const sizeClasses = computed(() => (props.size ? sizes[props.size] : ''))
 
 const onClick = () => {
-  emits('click')
+  emits('buttonPress')
 }
 </script>
 

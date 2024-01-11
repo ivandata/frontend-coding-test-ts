@@ -43,7 +43,7 @@ import {
   formatResults,
   GameDifficulty,
 } from '@components/game'
-import Modal from '@components/Modal/Modal.vue'
+import InitalModal from '@components/InitalModal/InitalModal.vue'
 import useScoresStore from '@store/scores'
 import useSettingsStore from '@store/settings'
 import { ModalsContainer, VueFinalModal, useModal } from 'vue-final-modal'
@@ -205,14 +205,8 @@ const updateGame = (updateType: 'scores' | 'totalActions') => {
   state[updateType] += 1
 }
 
-const { open, close } = useModal({
-  component: Modal,
-})
-
-watch(settingsStore, (newValue) => {
-  if (newValue.initials) {
-    close()
-  }
+const { open } = useModal({
+  component: InitalModal,
 })
 
 onMounted(() => {

@@ -32,7 +32,8 @@ import BaseButton from '@components/BaseButton/BaseButton.vue'
 
 const settingsStore = useSettingsStore()
 
-const gameLevels: GameLevel[] = Object.values(GameLevel)
+const gameLevels = Object.values(GameLevel)
+
 const currentLevelIndex: Ref<number> = computed(() =>
   gameLevels.indexOf(settingsStore.gameLevel),
 )

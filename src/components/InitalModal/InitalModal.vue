@@ -1,5 +1,6 @@
 <template>
   <VueFinalModal
+    modal-id="initial-modal"
     class="flex justify-center items-center"
     content-class="flex flex-col p-4 bg-white rounded border border-gray-100 dark:border-gray-800 max-w-2xl justify-center items-center"
   >
@@ -20,11 +21,13 @@
         .
       </p>
     </section>
-    <InitialInput class="max-w-sm" />
+    <InitialInput class="max-w-sm" v-on:save="close('initial-modal')" />
   </VueFinalModal>
 </template>
 
 <script setup lang="ts">
-import { VueFinalModal } from 'vue-final-modal'
+import { VueFinalModal, useVfm } from 'vue-final-modal'
 import InitialInput from '@components/InitialInput/InitialInput.vue'
+
+const { close } = useVfm()
 </script>

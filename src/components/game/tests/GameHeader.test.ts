@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker'
 import GameHeader from '../GameHeader.vue'
 
 describe('GameHeader', () => {
-  const initials = faker.lorem.word(3)
+  const initials = faker.lorem.word(5)
   const gameLevel = faker.helpers.arrayElement(Object.values(GameLevel))
 
   it('renders initials and game level correctly', async () => {
