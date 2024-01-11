@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { computed, Ref } from 'vue'
 import useSettingsStore from '@store/settings'
-import { GameLevel } from '@store/types'
+import { GameLevel } from '@types/game'
 import SvgIcon, { ChevronForward, ChevronBack } from '@components/SvgIcon'
 import BaseButton from '@components/BaseButton'
 

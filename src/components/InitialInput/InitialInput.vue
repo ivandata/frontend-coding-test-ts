@@ -8,6 +8,7 @@
         id="initials"
         ref="inputRef"
         v-model="state.inputValue"
+        type="text"
         v-bind:class="[
           'text-4xl font-bold uppercase bg-transparent text-center w-full cursor-pointer border-transparent rounded-md focus:bg-white',
           {
@@ -70,21 +71,44 @@ const toggleSaveButton = (show: boolean) => {
   }
 }
 
-const saveInitials = () => {
-  if (
+const validateInput = (): boolean =>
+  Boolean(
     state.inputValue?.match(/^[A-Za-z0-9]{1,5}$/) &&
-    state.inputValue.length === 5
-  ) {
-    settingsStore.setInitials(state.inputValue)
-    toggleSaveButton(false)
-    toast.success('Initials Saved', { timeout: 2000 })
-    emits('save')
-  } else {
+      state.inputValue.length === 5,
+  )
+
+const resetState = (resetToInitials: boolean) => {
+  if (resetToInitials) {
     state.inputValue = settingsStore.initials
-    toggleSaveButton(false)
-    toast.error('Invalid input. Please enter up to 5 letters and numbers.', {
-      timeout: 2000,
-    })
+  }
+  toggleSaveButton(false)
+}
+
+const saveInitialsAndEmit = () => {
+  settingsStore.setInitials(state.inputValue || '')
+  toast.success('Initials Saved', { timeout: 2000 })
+  emits('save')
+}
+
+const showNotification = (message: string, isSuccess: boolean) => {
+  if (isSuccess) {
+    toast.success(message, { timeout: 2000 })
+    return
+  }
+
+  toast.error(message, { timeout: 2000 })
+}
+
+const saveInitials = () => {
+  if (validateInput()) {
+    saveInitialsAndEmit()
+    resetState(false)
+  } else {
+    showNotification(
+      'Invalid input. Please enter up to 5 letters and numbers.',
+      false,
+    )
+    resetState(true)
   }
 }
 

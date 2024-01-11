@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { ScoresStore, Score, GameLevel } from './types'
+import { GameLevel, Score } from '@types/game'
+import { ScoresStore } from './types'
 
 const useScoresStore = defineStore('scores', {
   persist: true,

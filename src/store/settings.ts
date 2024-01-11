@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { GameLevel, SettingsStore } from './types'
+import { GameLevel } from '@types/game'
+import { SettingsStore } from './types'
 
 const useSettingsStore = defineStore('settings', {
   persist: true,

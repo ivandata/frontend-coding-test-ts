@@ -32,17 +32,16 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useModal } from 'vue-final-modal'
+import { useToast } from 'vue-toastification'
 import {
   GameControls,
   GameHeader,
   GameBoard,
   GameStatus,
   CardProps,
-  shuffleElements,
+  processCards,
   calculateScore,
   useFetch,
-  formatResults,
-  GameDifficulty,
 } from '@components/Game'
 import InitialModal from '@components/InitialModal'
 import useScoresStore from '@store/scores'
@@ -93,43 +92,40 @@ const isBoardBlocked = computed(
     state.isLoading || !state.isGameStarted || Boolean(state.preparationTime),
 )
 
-const url = ref(`https://pokeapi.co/api/v2/pokemon?limit=100`)
-
 const createTimeoutFunction =
   (pokemon: CardProps, currentDelay: number) => () =>
     setTimeout(() => {
       state.cards.push(pokemon)
     }, currentDelay)
 
+const updateCardsState = (cards: CardProps[]): number => {
+  let delay = 50
+  for (let i = 0; i <= cards.length; i += 1) {
+    if (cards[i]) {
+      const timeoutFunction = createTimeoutFunction(cards[i], 50 + delay)
+      timeoutFunction()
+    }
+    delay += 50
+  }
+  return delay
+}
+
+const toast = useToast()
+
 const createCardList = () => {
   state.isLoading = true
-  const { fetchData } = useFetch(url.value)
+  const { fetchData } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=100')
 
   fetchData()
-    .then(({ data }) => {
-      const results = formatResults(data)
-      const cards = shuffleElements(results)
-        .slice(0, GameDifficulty[gameLevel].cards)
-        .flatMap((obj: CardProps) => [{ ...obj }, { ...obj }])
-
-      return shuffleElements(cards)
-    })
-    .then((pokemons) => {
-      let delay = 50
-      for (let i = 0; i <= pokemons.length; i += 1) {
-        if (pokemons[i]) {
-          const timeoutFunction = createTimeoutFunction(pokemons[i], 50 + delay)
-          timeoutFunction()
-        }
-        delay += 50
-      }
-
-      return delay
-    })
+    .then((data) => processCards(data, gameLevel))
+    .then((cards) => updateCardsState(cards))
     .then((delay) => {
       setTimeout(() => {
         state.isLoading = false
       }, delay)
+    })
+    .catch((err) => {
+      toast.error('Something wrong with connection', err)
     })
 }
 

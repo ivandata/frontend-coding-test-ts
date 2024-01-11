@@ -1,12 +1,20 @@
 import axios from 'axios'
 import { ref } from 'vue'
+import { GameLevel } from '@types/game'
+import { CardProps } from './types'
+import { shuffleElements } from './utils'
+import { GameDifficulty } from './config'
 
-interface Pokemon {
+export interface Pokemon {
   name: string
   url: string
 }
 
-export const formatResults = (data: { results: Pokemon[] }) => {
+export interface ApiResponse {
+  data: { results: Pokemon[] }
+}
+
+export const formatResults = ({ data }: ApiResponse) => {
   return data.results.map((pokemon: Pokemon) => {
     const parts = pokemon.url.split('/').filter(Boolean)
     const id = parts[parts.length - 1] || 0
@@ -15,6 +23,18 @@ export const formatResults = (data: { results: Pokemon[] }) => {
       image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
     }
   })
+}
+
+export const processCards = (
+  data: ApiResponse,
+  gameLevel: GameLevel,
+): CardProps[] => {
+  const results = formatResults(data)
+  const cards = shuffleElements(results)
+    .slice(0, GameDifficulty[gameLevel].cards)
+    .flatMap((obj: CardProps) => [{ ...obj }, { ...obj }])
+
+  return shuffleElements(cards)
 }
 
 export const useFetch = (url: string) => {

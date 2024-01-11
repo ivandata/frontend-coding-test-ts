@@ -1,6 +1,7 @@
-import { GameLevel } from '@store/types'
+import { GameLevel } from '@types/game'
+import { GameDifficultyType } from './types'
 
-export const GameDifficulty = {
+export const GameDifficulty: GameDifficultyType = {
   [GameLevel.EASY]: {
     cards: 12,
   },

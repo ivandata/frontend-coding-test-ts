@@ -6,5 +6,5 @@ import GameStatus from './GameStatus.vue'
 export * from './types'
 export * from './utils'
 export { GameStatus, GameHeader, GameBoard, GameControls }
-export { useFetch, formatResults } from './useFetch'
+export { useFetch, formatResults, processCards } from './useFetch'
 export * from './config'

@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest'
 import render from '@test/render'
 import useSettingsStore from '@store/settings'
-import { GameLevel } from '@store/types'
+import { GameLevel } from '@types/game'
 import { nextTick } from 'vue'
 import { fireEvent } from '@testing-library/vue'
 import GameLevelSwitcher from '../LevelSwitcher.vue'

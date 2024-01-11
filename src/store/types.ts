@@ -1,13 +1,4 @@
-enum GameLevel {
-  EASY = 'easy',
-  MEDIUM = 'medium',
-  HARD = 'hard',
-}
-
-interface Score {
-  initials: string | null
-  scores: number
-}
+import { GameLevel, Score } from '@types/game'
 
 interface ScoresStore {
   [GameLevel.EASY]: Score[]
@@ -20,4 +11,4 @@ interface SettingsStore {
   gameLevel: GameLevel
 }
 
-export { GameLevel, SettingsStore, ScoresStore, Score }
+export { SettingsStore, ScoresStore }

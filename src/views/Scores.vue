@@ -3,7 +3,7 @@
     <header class="my-5">
       <h1 class="font-bold text-3xl">Scores</h1>
     </header>
-    <div class="tabs w-full flex gap-3 mb-10">
+    <div class="tabs w-full flex gap-3 mb-10" role="tablist">
       <button
         v-for="level in gameLevels"
         v-bind:key="level"
@@ -15,13 +15,18 @@
             'active-level': settingsStore.gameLevel === level,
           },
         ]"
+        v-bind:aria-selected="state.currentTab === level"
         v-on:click="onTabClick(level)"
       >
         {{ capitalizeFirstLetter(level) }}
       </button>
     </div>
 
-    <div class="tab-content">
+    <div
+      class="tab-content"
+      role="tabpanel"
+      v-bind:aria-labelledby="`tab-${state.currentTab}`"
+    >
       <table v-if="currentScores.length" class="table-auto w-full">
         <thead>
           <tr>
@@ -70,7 +75,7 @@ import { computed, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import useScoresStore from '@store/scores'
 import useSettingsStore from '@store/settings'
-import { GameLevel } from '@store/types'
+import { GameLevel } from '@types/game'
 
 const settingsStore = useSettingsStore()
 

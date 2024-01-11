@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest'
 import render from '@test/render'
-import { GameLevel } from '@store/types'
+import { GameLevel } from '@types/game'
 import { faker } from '@faker-js/faker'
 import GameHeader from '../GameHeader.vue'
 

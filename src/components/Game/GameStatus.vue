@@ -1,13 +1,25 @@
 <template>
-  <div v-if="isGameStarted" class="text-xl">
-    <div v-if="preparationTime">Get Ready: {{ preparationTime }}</div>
-    <div v-else-if="gameTime">
-      <div class="text-xs">Remaining time</div>
+  <div v-if="isGameStarted" class="text-xl centered-container">
+    <div v-if="preparationTime">
+      <span class="sr-only">Preparation Time: </span>
+      Get Ready:
+      {{ preparationTime }}
+    </div>
+    <div v-else-if="gameTime" aria-live="polite" class="centered-container">
+      <span class="text-xs">Remaining time</span>
+      <br />
+      <span class="sr-only">Time left: </span>
       {{ formattedGameTime }}
     </div>
   </div>
-  <div v-else-if="bestScores" class="text-xl">
-    <div class="text-xs">Your best results</div>
+  <div
+    v-else-if="bestScores"
+    class="text-xl centered-container"
+    aria-live="polite"
+  >
+    <span class="text-xs">Your best results</span>
+    <span class="sr-only">Best Scores: </span>
+    <br />
     {{ bestScores.scores }}
   </div>
 </template>
@@ -43,3 +55,18 @@ const formattedGameTime = computed(() => {
     : `${formattedSeconds} sec`
 })
 </script>
+
+<style scoped>
+.centered-container {
+  @apply flex flex-col justify-center;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>
