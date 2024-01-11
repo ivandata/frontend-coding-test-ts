@@ -48,7 +48,7 @@ import { reactive, ref, watch } from 'vue'
 import useSettingsStore from '@store/settings'
 import { useToast } from 'vue-toastification'
 import SvgIcon, { Pencil, Save } from '@components/SvgIcon'
-import BaseButton from '@components/BaseButton/BaseButton.vue'
+import BaseButton from '@components/BaseButton'
 
 const settingsStore = useSettingsStore()
 

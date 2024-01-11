@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import BaseButton from '@components/BaseButton/BaseButton.vue'
+import BaseButton from '@components/BaseButton'
 import SvgIcon, { Play, Repeat } from '@components/SvgIcon'
 
 const props = defineProps<{

@@ -31,6 +31,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { useModal } from 'vue-final-modal'
 import {
   GameControls,
   GameHeader,
@@ -43,12 +44,10 @@ import {
   formatResults,
   GameDifficulty,
 } from '@components/Game'
-import InitalModal from '@components/InitalModal/InitalModal.vue'
+import InitialModal from '@components/InitialModal'
 import useScoresStore from '@store/scores'
 import useSettingsStore from '@store/settings'
-import { ModalsContainer, VueFinalModal, useModal } from 'vue-final-modal'
 
-// Define the state and types as necessary
 interface GameState {
   cards: CardProps[]
   isLoading: boolean
@@ -93,8 +92,6 @@ const isBoardBlocked = computed(
   () =>
     state.isLoading || !state.isGameStarted || Boolean(state.preparationTime),
 )
-
-// move to config
 
 const url = ref(`https://pokeapi.co/api/v2/pokemon?limit=100`)
 
@@ -206,7 +203,7 @@ const updateGame = (updateType: 'scores' | 'totalActions') => {
 }
 
 const { open } = useModal({
-  component: InitalModal,
+  component: InitialModal,
 })
 
 onMounted(() => {

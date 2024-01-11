@@ -77,15 +77,11 @@ const settingsStore = useSettingsStore()
 const scoresStore = useScoresStore()
 const { getScores } = storeToRefs(scoresStore)
 
-interface State {
+const state = reactive<{
   currentTab: GameLevel
-}
-
-const initialState: State = {
+}>({
   currentTab: settingsStore.gameLevel,
-}
-
-const state = reactive<State>({ ...initialState })
+})
 
 const gameLevels = Object.values(GameLevel)
 

@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { VueFinalModal, useVfm } from 'vue-final-modal'
-import InitialInput from '@components/InitialInput/InitialInput.vue'
+import InitialInput from '@components/InitialInput'
 
 const { close } = useVfm()
 </script>

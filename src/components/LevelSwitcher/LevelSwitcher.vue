@@ -28,7 +28,7 @@ import { computed, Ref } from 'vue'
 import useSettingsStore from '@store/settings'
 import { GameLevel } from '@store/types'
 import SvgIcon, { ChevronForward, ChevronBack } from '@components/SvgIcon'
-import BaseButton from '@components/BaseButton/BaseButton.vue'
+import BaseButton from '@components/BaseButton'
 
 const settingsStore = useSettingsStore()
 
