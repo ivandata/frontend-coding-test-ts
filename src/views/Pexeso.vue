@@ -42,7 +42,7 @@ import {
   useFetch,
   formatResults,
   GameDifficulty,
-} from '@components/game'
+} from '@components/Game'
 import InitalModal from '@components/InitalModal/InitalModal.vue'
 import useScoresStore from '@store/scores'
 import useSettingsStore from '@store/settings'
