@@ -1,11 +1,7 @@
 <template>
-  <section
-    class="game flex justify-center items-center h-full flex-col w-full gap-6"
-  >
+  <section class="game">
     <GameHeader class="header" />
-    <div
-      class="controls h-full flex flex-row justify-between w-full bg-white py-3 px-2 rounded-md border-2 border-gray-100 border-solid"
-    >
+    <div class="controls">
       <GameControls
         v-bind:is-game-started="state.isGameStarted"
         v-bind:is-loading="state.isLoading"
@@ -30,9 +26,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, watch } from 'vue'
 import { useModal } from 'vue-final-modal'
-import { useToast } from 'vue-toastification'
 import {
   GameControls,
   GameHeader,
@@ -41,8 +36,8 @@ import {
   CardProps,
   processCards,
   calculateScore,
-  useFetch,
 } from '@components/Game'
+import useFetch, { ApiResponse } from '@api/index'
 import InitialModal from '@components/InitialModal'
 import useScoresStore from '@store/scores'
 import useSettingsStore from '@store/settings'
@@ -110,11 +105,11 @@ const updateCardsState = (cards: CardProps[]): number => {
   return delay
 }
 
-const toast = useToast()
-
 const createCardList = () => {
   state.isLoading = true
-  const { fetchData } = useFetch('https://pokeapi.co/api/v2/pokemon?limit=100')
+  const { fetchData } = useFetch<ApiResponse>(
+    'https://pokeapi.co/api/v2/pokemon?limit=100',
+  )
 
   fetchData()
     .then((data) => processCards(data, gameLevel))
@@ -123,9 +118,6 @@ const createCardList = () => {
       setTimeout(() => {
         state.isLoading = false
       }, delay)
-    })
-    .catch((err) => {
-      toast.error('Something wrong with connection', err)
     })
 }
 
@@ -213,6 +205,7 @@ onMounted(() => {
 
 <style lang="postcss" scoped>
 .game {
+  @apply flex justify-center items-center h-full flex-col w-full gap-6;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 100px auto;
@@ -225,6 +218,7 @@ onMounted(() => {
 }
 
 .controls {
+  @apply h-full flex flex-row justify-between w-full bg-white py-3 px-2 rounded-md border-2 border-gray-100 border-solid;
   grid-area: controls;
 }
 .board {

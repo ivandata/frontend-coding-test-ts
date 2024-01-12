@@ -1,4 +1,7 @@
+import { GameLevel } from '@types/game'
+import { ApiResponse, formatResults } from '@api/index'
 import { CardProps } from './types'
+import { GameDifficulty } from './config'
 
 export const shuffleElements = (cardsCollection: CardProps[]) => {
   const result = cardsCollection
@@ -44,4 +47,16 @@ export const calculateScore = ({
   const actionScore = Math.max(0, 500 - (totalActions - perfectActions) * 10)
 
   return timeScore + accuracyScore + actionScore
+}
+
+export const processCards = (
+  data: ApiResponse,
+  gameLevel: GameLevel,
+): CardProps[] => {
+  const results = formatResults(data)
+  const cards = shuffleElements(results)
+    .slice(0, GameDifficulty[gameLevel].cards)
+    .flatMap((obj: CardProps) => [{ ...obj }, { ...obj }])
+
+  return shuffleElements(cards)
 }

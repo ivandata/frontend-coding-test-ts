@@ -16,6 +16,7 @@
     ],
     "lib": ["esnext", "dom"],
     "paths": {
+      "@api/*": ["./src/api/*"],
       "@components/*": ["./src/components/*"],
       "@src/*": ["./src/*"],
       "@views/*": ["./src/views/*"],
