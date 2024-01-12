@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { fireEvent } from '@testing-library/vue'
 import render from '@test/render'
 import BaseButton from '../BaseButton.vue'

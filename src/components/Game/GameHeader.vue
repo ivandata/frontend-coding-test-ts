@@ -3,14 +3,18 @@
     <h1 class="font-bold text-2xl">
       <span class="text-gray-500 text-xl">Initials</span>
       <br />
-      <span class="uppercase" aria-label="Your initials are">
+      <span class="uppercase" aria-label="Your initials are" role="definition">
         {{ setting.initials }}
       </span>
     </h1>
     <h2 class="font-bold text-2xl">
       <span class="text-gray-500 text-xl">Difficulty</span>
       <br />
-      <span class="uppercase" aria-label="Current game difficulty level is">
+      <span
+        class="uppercase"
+        aria-label="Current game difficulty level is"
+        role="definition"
+      >
         {{ setting.gameLevel }}
       </span>
     </h2>
